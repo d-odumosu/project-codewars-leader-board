@@ -1,0 +1,1 @@
+import {fetcherUser} from "./api.mjs"
