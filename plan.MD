@@ -1,11 +1,11 @@
 # Codewars Leaderboard — Rubric Checklist
 
-- [ ] Website contains an input to accept a comma-separated list of users.
+- [x] Website contains an input to accept a comma-separated list of users.
 - [ ] Submitting the list fetches data from the Codewars API for each user.
 - [ ] A dropdown is shown with all possible language rankings plus the overall ranking.
 - [ ] The default ranking selected is the overall ranking.
 - [ ] A table is shown for the currently selected ranking.
-- [ ] The table contains columns for username, clan, and score.
+- [x] The table contains columns for username, clan, and score.
 - [ ] Changing the selected ranking updates the table.
 - [ ] The table is sorted from highest to lowest score.
 - [ ] Users without a ranking for the selected language are not shown.

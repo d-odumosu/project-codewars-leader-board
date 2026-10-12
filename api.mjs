@@ -6,10 +6,8 @@ export async function fetchUser(user) {
             throw new Error(`Invalid user:${user} not found`);
         }
         const result = await response.json();
-        console.log(result);
         return result;
     } catch (error) {
-        console.error(error.message);
         throw error
     }
 }
