@@ -1,0 +1,76 @@
+/* Page layout */
+
+body {
+    margin: 0;
+}
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+/* Main sections */
+section {
+    margin-bottom: 40px;
+}
+
+/* Username form */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+form label {
+    text-align: center;
+}
+
+form input,
+form button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Leaderboard controls */
+#leaderboard-section > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+/* Table */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+}
+
+/* Centre the page headings */
+header,
+section > h2 {
+    text-align: center;
+}
+
+/* Template rows / table columns */
+.username,
+.username-header {
+    text-align: left;
+}
+
+.clan,
+.clan-header {
+    text-align: center;
+}
+
+.score,
+.score-header {
+    text-align: right;
+}
