@@ -4,10 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Codewars leaderboard</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <main>
+        <header>
+            <h1>CodeWars Leader Board</h1>
+        </header>
+
+        <section id="user-search-section">
+            <h2>Find CodeWars users</h2>
+
+            <form id="user-form">
+                <label for="usernames">
+                    Enter CodeWars usernames separated by commas
+                </label>
+
+                <input type="text"
+                       id="usernames"
+                       name="usernames"
+                       placeholder="alice, bob, charlie"
+                       required
+                >
+
+                <button type="submit">Get leaderboard</button>
+            </form>
+        </section>
+
+        <section id="leaderboard-section" hidden>
+            <h2>Leaderboard</h2>
+            <div>
+                <label for="ranking-select">Choose a ranking</label>
+                <select id="ranking-select">
+                    <!-- JavaScript will add the options -->
+                </select>
+            </div>
+            <table>
+                <caption>CodeWars leaderboard rankings</caption>
+                <thead>
+                <tr>
+                    <th class="username-header" scope="col">Username</th>
+                    <th class="clan-header" scope="col">Clan</th>
+                    <th class="score-header" scope="col">Score</th>
+                </tr>
+                </thead>
+                <tbody id="leaderboard-body" ></tbody>
+            </table>
+        </section>
+        <template id="user-row-template">
+            <tr>
+                <td class="username"></td>
+                <td class="clan"></td>
+                <td class="score"></td>
+            </tr>
+        </template>
+    </main>
+
+    <script src="index.mjs" type="module"></script>
 
 </body>
-
-<script src="index.mjs" type="module"></script>
 </html>
