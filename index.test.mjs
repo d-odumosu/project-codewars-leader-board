@@ -1,33 +1,176 @@
-// This is a placeholder file which shows how you use the nock library to
-// "mock" fetch requests, replacing real requests with fake ones that you
-// control in the test. This means you can "force" the fetch request to return
-// data in the format that you want.
-// IMPORTANT: You _must_ run npm install within the Project-Codewars-Leaderboard
-// folder for this to work.
-// You can change or delete the contents of the file once you have understood
-// how it works.
-
 import test from "node:test";
+import describe  from "node:test";
 import assert from "node:assert";
 import nock from "nock";
-import { makeFetchRequest } from "./index.mjs";
+import { fetchUser } from "./api.mjs";
+import { getLeaderBoardData } from "./helpers.mjs"
 
-test("mocks a fetch function", async () => {
-    // Create a fetch request "mock" using the nock library, which "replaces"
-    // real requests with fake ones that we can control in the test using nock
-    // functions.
-    // In this example, we set up nock so that it looks for GET requests to
-    // https://example.com/test (no other URLs will work) and responds with a 200
-    // HTTP status code, and the body {"user": "someone"}.
-    const scope = nock("https://example.com").get("/test").reply(200, JSON.stringify({ user: "someone" }));
+describe("FetchUser", () => {
 
-    // Check that the response we got back included the fake body we set up.
-    const response = await makeFetchRequest();
-    const parsedResponse = await response.json();
-    assert(parsedResponse.user === "someone");
+    test("fetchUser returns a Code wars user", async () => {
+        const scope = nock("https://www.codewars.com/api/v1/users")
+            .get("/alice1")
+            .reply(200, {
+                username: "alice1",
+                clan: "some clan",
+                ranks: {
+                    overall: {
+                        score: 2116,
+                    }
+                }
+            });
 
-    // Ensure that a fetch request has been replaced by the nock library. This
-    // helps ensure that you're not making real fetch requests that don't match
-    // the nock configuration.
-    assert(scope.isDone() === true, "No matching fetch request has been made");
+        // Check that the response we got back included the fake body we set up.
+        const user = await fetchUser('alice1');
+
+        assert.equal(user.username, 'alice1');
+        assert.equal(user.clan, 'some clan')
+        assert(scope.isDone() === true, "No matching fetch request has been made");
+    });
+
+    test("throws an error for an invalid user", async () => {
+
+        const username = "user-not-found"
+        const scope = nock("https://www.codewars.com/api/v1/users")
+            .get(`/${username}`)
+            .reply(404, {
+                message: `Invalid user:${username} not found`
+            })
+
+        await assert.rejects(()=> fetchUser(username), {
+            message: `Invalid user:${username} not found`
+        })
+
+        assert(scope.isDone() === true, "No matching fetch request has been made")
+    })
+});
+
+describe("getLeaderboardData", () => {
+    const users = [
+        {
+            username: 'alice',
+            clan: 'code your future',
+            ranks: {
+                overall:{
+                    score: 3009,
+                },
+                languages: {
+                    javascript:{
+                        score: 1009,
+                    },
+                    ruby:{
+                        score: 2908
+                    },
+                    coffeescript: {
+                        score: 5345,
+                    }
+                }
+            }
+        },
+        {
+            username: 'bob',
+            clan: 'code academy',
+            ranks: {
+                overall: {
+                    score: 2500,
+                },
+                languages: {
+                    javascript: {
+                        score: 1800,
+                    },
+                    python: {
+                        score: 2200,
+                    }
+                }
+            }
+        },
+        {
+            username: 'charlie',
+            clan: 'developers united',
+            ranks: {
+                overall: {
+                    score: 4200,
+                },
+                languages: {
+                    ruby: {
+                        score: 3500,
+                    },
+                    python: {
+                        score: 1900,
+                    },
+                    java: {
+                        score: 2800,
+                    }
+                }
+            }
+        },
+        {
+            username: 'david',
+            clan: 'tech learners',
+            ranks: {
+                overall: {
+                    score: 1800,
+                },
+                languages: {
+                    javascript: {
+                        score: 1200,
+                    },
+                    java: {
+                        score: 1600,
+                    }
+                }
+            }
+        }
+    ]
+
+    test("returns overall scores", () => {
+        const expectedResult = [
+            {
+                username: 'alice',
+                clan: 'code your future',
+                score: 3009
+            },
+            {
+                username: 'bob',
+                clan: 'code academy',
+                score: 2500
+            },
+            {
+                username: 'charlie',
+                clan: 'developers united',
+                score: 4200
+            },
+            {
+                username: 'david',
+                clan: 'tech learners',
+                score: 1800
+            }
+        ];
+        const input = "overall"
+        const result = getLeaderBoardData(users, input)
+        assert.deepEqual(result, expectedResult )
+    });
+
+    test("returns language scores", () => {
+        const expectedResult = [
+            {
+                username: "alice",
+                clan: "code your future",
+                score: 1009
+            },
+            {
+                username: "bob",
+                clan: "code academy",
+                score: 1800
+            },
+            {
+                username: "david",
+                clan: "tech learners",
+                score: 1200
+            }
+        ];
+        const input = "javascript"
+        const result = getLeaderBoardData(users, input)
+        assert.deepEqual(result, expectedResult)
+    });
 });
