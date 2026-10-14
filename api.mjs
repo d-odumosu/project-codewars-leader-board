@@ -1,12 +1,11 @@
-export async function fetchUser(user) {
-    const url = ` https://www.codewars.com/api/v1/users/${user}`;
+export async function fetchUser(username) {
+    const url = ` https://www.codewars.com/api/v1/users/${username}`;
     try {
         const response = await fetch(url);
         if (!response.ok) {
-            throw new Error(`Invalid user:${user} not found`);
+            throw new Error(`Invalid user:${username} not found`);
         }
-        const result = await response.json();
-        return result;
+        return await response.json();
     } catch (error) {
         throw error
     }
