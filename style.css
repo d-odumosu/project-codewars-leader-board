@@ -74,3 +74,8 @@ section > h2 {
 .score-header {
     text-align: right;
 }
+
+.top-user{
+    background-color: #fff3b0;
+    font-weight: 600;
+}
