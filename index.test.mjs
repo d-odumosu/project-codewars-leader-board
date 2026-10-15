@@ -38,7 +38,7 @@ describe("FetchUser", () => {
             })
 
         await assert.rejects(()=> fetchUser(username), {
-            message: `Invalid user:${username} not found`
+            message: `Invalid user: ${username} not found`
         })
 
         assert(scope.isDone() === true, "No matching fetch request has been made")
